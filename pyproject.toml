@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "tradinganalyzeapi"
+version = "0.1.0"
+description = "Backend for Trading Analyze application"
+authors = ["NeoTheBestDeveloper <neothebestmain@protonmail.com>", "qiisqwww <qiisqwww@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = {extras = ["all"], version = "^0.111.1"}
+sqlalchemy = "^2.0.31"
+alembic = "^1.13.2"
+asyncpg = "^0.29.0"
+loguru = "^0.7.2"
+requests = "^2.32.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
