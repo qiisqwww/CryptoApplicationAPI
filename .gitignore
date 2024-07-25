@@ -1,5 +1,6 @@
 /venv
 /logs
+/.idea
 *.env
 *.key
 *.log
