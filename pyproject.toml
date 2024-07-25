@@ -13,6 +13,7 @@ alembic = "^1.13.2"
 asyncpg = "^0.29.0"
 loguru = "^0.7.2"
 requests = "^2.32.3"
+fastapi-users = "^13.0.0"
 
 
 [build-system]

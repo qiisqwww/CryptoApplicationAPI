@@ -1,0 +1,29 @@
+# Choose image for project. It will be downloaded from https://hub.docker.com/
+FROM python:3.12-alpine
+
+
+ENV PYTHONFAULTHANDLER=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONHASHSEED=random \
+    PIP_NO_CACHE_DIR=off \
+    PIP_DISABLE_PIP_VERSION_CHECK=on \
+    PIP_DEFAULT_TIMEOUT=100 \
+    POETRY_VERSION=1.5.1
+
+# Install poetry.
+RUN pip install "poetry==$POETRY_VERSION"
+
+# Copy only requirements to cache them in docker layer
+WORKDIR /app
+
+COPY nginx/crypto_analyze_api.crt /app/
+COPY poetry.lock pyproject.toml /app/
+
+# Configurate poetry and install requirement dependencies.
+RUN poetry config virtualenvs.create false && poetry install --no-dev --no-interaction --no-ansi
+
+# Copy project into container.
+COPY src /app/src
+
+# Start bot with this command. Will be called when docker container will be started.
+CMD [ "python", "-m", "src" ]
