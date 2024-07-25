@@ -1,24 +1,26 @@
 version: '3.9'
 
 services:
-  proxy:
-    depends_on:
-      - trading_analyze_api
-    build:
-      dockerfile: Dockerfile
-      context: ../nginx
-    ports:
-      - "443:443"
-
   trading_analyze_api:
     env_file:
       - ../.env/.dev.env
     build:
       dockerfile: ./docker/Dockerfile.dev
       context: ../
-    depends_on:
-      postgres:
-          condition: service_healthy
+    ports:
+      - "8080:8080"
+    #depends_on:
+    #  postgres:
+    #    condition: service_healthy
+
+  #proxy:
+  #  depends_on:
+  #    - trading_analyze_api
+  #  build:
+  #    dockerfile: Dockerfileв
+  #    context: ../nginx
+  #  ports:
+  #    - "443:443"
 
   postgres:
     image: postgres:16.1-alpine3.19
@@ -28,8 +30,8 @@ services:
     volumes:
       - /var/lib/trading_analyze_db:/var/lib/postgresql/data
       - ../postgres/postgresql.conf:/etc/postgresql/postgresql.conf
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    #healthcheck:
+    #  test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+    #  interval: 10s
+    #  timeout: 5s
+    #  retries: 5
