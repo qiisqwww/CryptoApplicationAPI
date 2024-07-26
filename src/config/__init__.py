@@ -10,7 +10,9 @@ from .config import (
     DB_PASS,
     DB_NAME,
     DB_HOST,
-    DB_USER
+    DB_USER,
+    SECRET,
+    TOKEN_LIFETIME
 )
 from .logger_config import configurate_logger
 
@@ -27,5 +29,7 @@ __all__ = [
     "DB_PASS",
     "DB_NAME",
     "DB_PORT",
+    "SECRET",
+    "TOKEN_LIFETIME",
     "configurate_logger"
 ]

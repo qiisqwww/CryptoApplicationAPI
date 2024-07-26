@@ -2,6 +2,7 @@ from fastapi import FastAPI
 
 from src.config import DEBUG, PROJECT_NAME, DOCS_URL, OPENAPI_URL
 from src.middlewares import catch_exception_middleware
+from src.auth import auth_router
 
 __all__ = [
     "app"
@@ -18,4 +19,5 @@ app = FastAPI(
 )
 
 app.middleware("http")(catch_exception_middleware)
+app.include_router(auth_router)
 
