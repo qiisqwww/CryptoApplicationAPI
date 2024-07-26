@@ -25,5 +25,7 @@ RUN poetry config virtualenvs.create false && poetry install --no-dev --no-inter
 # Copy project into container.
 COPY src /app/src
 
-# Start bot with this command. Will be called when docker container will be started.
-CMD [ "python", "-m", "src" ]
+# Copy alembic data into container.
+COPY alembic /app/alembic
+COPY alembic.ini /app/alembic.ini
+COPY scripts/app.sh /app/scripts/app.sh

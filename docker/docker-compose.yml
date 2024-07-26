@@ -16,8 +16,10 @@ services:
     build:
       dockerfile: ./docker/Dockerfile
       context: ../
+    command: ["/app/scripts/app.sh"]
     volumes:
-      - /var/log/trading_analyze_api:/app/logs
+      - ../alembic/versions:/app/alembic/versions
+      - ../logs:/app/logs
     ports:
       - "8080:8080"
     depends_on:
@@ -33,7 +35,7 @@ services:
       - /var/lib/trading_analyze_db:/var/lib/postgresql/data
       - ../postgres/postgresql.conf:/etc/postgresql/postgresql.conf
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
       interval: 10s
       timeout: 5s
       retries: 5
