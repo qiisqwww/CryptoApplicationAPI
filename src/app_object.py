@@ -20,4 +20,3 @@ app = FastAPI(
 
 app.middleware("http")(catch_exception_middleware)
 app.include_router(auth_router)
-

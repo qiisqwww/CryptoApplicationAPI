@@ -12,15 +12,14 @@ __all__ = [
 ]
 
 
-bearer_transport = BearerTransport(tokenUrl="api/auth/token/login")
+bearer_transport = BearerTransport(tokenUrl="api/auth/token")
 
 
 def get_jwt_strategy() -> JWTStrategy:
     return JWTStrategy(
         secret=SECRET,
         lifetime_seconds=TOKEN_LIFETIME,
-        algorithm="HS256",
-
+        algorithm="HS256"
     )
 
 
