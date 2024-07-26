@@ -1,12 +1,21 @@
 version: '3.9'
 
 services:
+  proxy:
+    build:
+      dockerfile: Dockerfile
+      context: ../nginx
+    ports:
+      - "443:443"
+    depends_on:
+      - trading_analyze_api
+
   trading_analyze_api:
-    env_file:
-      - ../.env/.dev.env
     build:
       dockerfile: ./docker/Dockerfile.dev
       context: ../
+    env_file:
+      - ../.env/.dev.env
     command: ["/app/scripts/app.sh"]
     volumes:
       - ../alembic/versions:/app/alembic/versions
@@ -16,15 +25,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-
-  #proxy:
-  #  depends_on:
-  #    - trading_analyze_api
-  #  build:
-  #    dockerfile: Dockerfile
-  #    context: ../nginx
-  #  ports:
-  #    - "443:443"
 
   postgres:
     image: postgres:16.1-alpine3.19
@@ -39,3 +39,5 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    ports:
+      - "5432:5432"

@@ -16,7 +16,7 @@ RUN pip install "poetry==$POETRY_VERSION"
 # Copy only requirements to cache them in docker layer
 WORKDIR /app
 
-COPY nginx/crypto_analyze_api.crt /app/
+COPY nginx/trading_analyze_api.crt /app/
 COPY poetry.lock pyproject.toml /app/
 
 # Configurate poetry and install requirement dependencies.

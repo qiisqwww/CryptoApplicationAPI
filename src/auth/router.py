@@ -8,14 +8,12 @@ __all__ = [
 ]
 
 
-auth_router = APIRouter()
+auth_router = APIRouter(prefix="/user")
 auth_router.include_router(
     fastapi_users.get_auth_router(auth_backend),
-    prefix="/api/auth/token",
-    tags=["Auth"]
+    tags=["Authentication"],
 )
 auth_router.include_router(
     fastapi_users.get_register_router(UserRead, UserCreate),
-    prefix="/api/auth",
-    tags=["Auth"]
+    tags=["Registration"]
 )
