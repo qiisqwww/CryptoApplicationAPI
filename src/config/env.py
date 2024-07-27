@@ -5,7 +5,7 @@ __all__ = [
     "StrEnv",
     "BoolEnv",
     "IntEnv",
-    "IntListEnv",
+    "IntListEnv"
 ]
 
 

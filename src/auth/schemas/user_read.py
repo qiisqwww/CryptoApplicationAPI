@@ -1,13 +1,13 @@
 from typing import Optional
 
-from fastapi_users.schemas import BaseUser
+from pydantic import BaseModel
 
 __all__ = [
     "UserRead"
 ]
 
 
-class UserRead(BaseUser[int]):
+class UserRead(BaseModel):
     id: int
     username: str
     email: str

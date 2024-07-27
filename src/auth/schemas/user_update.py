@@ -1,13 +1,13 @@
 from typing import Optional
 
-from fastapi_users.schemas import BaseUserUpdate
+from pydantic import BaseModel
 
 __all__ = [
     "UserUpdate"
 ]
 
 
-class UserUpdate(BaseUserUpdate):
+class UserUpdate(BaseModel):
     username: str
     email: str
     is_active: Optional[bool] = True

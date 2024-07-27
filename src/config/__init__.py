@@ -12,7 +12,8 @@ from .config import (
     DB_HOST,
     DB_USER,
     SECRET,
-    TOKEN_LIFETIME
+    TOKEN_LIFETIME,
+    ALGORITHM
 )
 from .logger_config import configurate_logger
 
@@ -31,5 +32,6 @@ __all__ = [
     "DB_PORT",
     "SECRET",
     "TOKEN_LIFETIME",
+    "ALGORITHM",
     "configurate_logger"
 ]

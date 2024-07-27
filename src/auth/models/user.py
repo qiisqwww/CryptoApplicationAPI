@@ -1,5 +1,4 @@
 from sqlalchemy import Column, String, Integer, Boolean
-from fastapi_users.db import SQLAlchemyBaseUserTable
 
 from src.database import Base
 
@@ -8,7 +7,7 @@ __all__ = [
 ]
 
 
-class User(SQLAlchemyBaseUserTable[int], Base):
+class User(Base):
     __tablename__ = "users"
 
     id: int = Column(Integer, primary_key=True, unique=True)  # type: ignore

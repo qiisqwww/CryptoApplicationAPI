@@ -16,7 +16,8 @@ __all__ = [
     "DB_PASS",
     "DB_USER",
     "SECRET",
-    "TOKEN_LIFETIME"
+    "TOKEN_LIFETIME",
+    "ALGORITHM"
 ]
 
 
@@ -39,3 +40,4 @@ DB_HOST: str = StrEnv("DB_HOST")
 
 TOKEN_LIFETIME: int = IntEnv("TOKEN_LIFETIME")
 SECRET: str = StrEnv("SECRET")
+ALGORITHM: str = StrEnv("ALGORITHM")

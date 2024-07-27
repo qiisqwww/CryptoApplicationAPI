@@ -1,13 +1,13 @@
 from typing import Optional
 
-from fastapi_users.schemas import BaseUserCreate
+from pydantic import BaseModel
 
 __all__ = [
     "UserCreate"
 ]
 
 
-class UserCreate(BaseUserCreate):
+class UserCreate(BaseModel):
     username: str
     email: str
     password: str
