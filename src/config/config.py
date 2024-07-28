@@ -15,6 +15,8 @@ __all__ = [
     "DB_PORT",
     "DB_PASS",
     "DB_USER",
+    "REDIS_HOST",
+    "REDIS_PORT",
     "SECRET",
     "TOKEN_LIFETIME",
     "ALGORITHM"
@@ -37,6 +39,9 @@ DB_PASS: str = StrEnv("DB_PASS")
 DB_NAME: str = StrEnv("DB_NAME")
 DB_PORT: int = IntEnv("DB_PORT")
 DB_HOST: str = StrEnv("DB_HOST")
+
+REDIS_HOST: str = StrEnv("REDIS_HOST")
+REDIS_PORT: int = IntEnv("REDIS_PORT")
 
 TOKEN_LIFETIME: int = IntEnv("TOKEN_LIFETIME")
 SECRET: str = StrEnv("SECRET")
