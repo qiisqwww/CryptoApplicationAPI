@@ -23,10 +23,10 @@ services:
     ports:
       - "8081:8081"
     depends_on:
-      postgres:
-          condition: service_healthy
+      postgres_auth:
+        condition: service_healthy
 
-  postgres:
+  postgres_auth:
     image: postgres:16.1-alpine3.19
     restart: always
     env_file:
