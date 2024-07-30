@@ -3,14 +3,14 @@ version: '3.9'
 services:
   proxy:
     depends_on:
-      - trading_analyze_api
+      - metro_alarm_service_auth
     build:
       dockerfile: Dockerfile
       context: ../nginx
     ports:
       - "443:443"
 
-  trading_analyze_api:
+  metro_alarm_service_auth:
     env_file:
       - ../.env/.env
     build:
@@ -25,8 +25,6 @@ services:
     depends_on:
       postgres:
           condition: service_healthy
-      redis:
-        condition: service_healthy
 
   postgres:
     image: postgres:16.1-alpine3.19
@@ -42,4 +40,4 @@ services:
       timeout: 5s
       retries: 5
     ports:
-      - "5431:5431"
+      - "5431:5432"

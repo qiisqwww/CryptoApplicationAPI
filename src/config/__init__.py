@@ -11,8 +11,6 @@ from .config import (
     DB_NAME,
     DB_HOST,
     DB_USER,
-    REDIS_HOST,
-    REDIS_PORT,
     SECRET,
     TOKEN_LIFETIME,
     ALGORITHM
@@ -32,8 +30,6 @@ __all__ = [
     "DB_PASS",
     "DB_NAME",
     "DB_PORT",
-    "REDIS_HOST",
-    "REDIS_PORT",
     "SECRET",
     "TOKEN_LIFETIME",
     "ALGORITHM",
