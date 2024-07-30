@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 
 from src.config import DEBUG, PROJECT_NAME, DOCS_URL, OPENAPI_URL
-from src.middlewares import catch_exception_middleware
-from src.auth import auth_router
+from src.catch_exception_middleware import catch_exception_middleware
+from src.router import auth_router
 
 __all__ = [
     "app"

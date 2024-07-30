@@ -1,5 +1,5 @@
-/venv
 /logs
+postgres/data
 /.idea
 *.env
 *.key

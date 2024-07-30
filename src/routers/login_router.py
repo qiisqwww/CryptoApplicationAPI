@@ -1,15 +1,13 @@
 from datetime import timedelta
 from typing import Annotated
 
-import jwt
-from jwt.exceptions import InvalidTokenError
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
-from src.config import TOKEN_LIFETIME, SECRET, ALGORITHM
-from src.auth.services import UserService, get_user_service
-from src.auth.schemas import Token, TokenData, UserReturnData
-from src.auth.utils import create_access_token
+from src.config import TOKEN_LIFETIME
+from src.services import UserService, get_user_service
+from src.schemas import Token
+from src.utils import create_access_token
 
 __all__ = [
     "login_router",

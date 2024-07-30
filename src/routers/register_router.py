@@ -1,11 +1,8 @@
-from typing import Annotated
-
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from src.auth.schemas import UserInputData, UserReturnData
-from src.auth.services import UserService, get_user_service
-from src.auth.utils import get_hashed_password
-from .login_router import oauth2_scheme
+from src.schemas import UserInputData, UserReturnData
+from src.services import UserService, get_user_service
+from src.utils import get_hashed_password
 
 __all__ = [
     "register_router",

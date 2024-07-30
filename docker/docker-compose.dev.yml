@@ -8,9 +8,9 @@ services:
     ports:
       - "443:443"
     depends_on:
-      - trading_analyze_api
+      - metro_alarm_server_auth
 
-  trading_analyze_api:
+  metro_alarm_server_auth:
     build:
       dockerfile: ./docker/Dockerfile.dev
       context: ../
@@ -21,7 +21,7 @@ services:
       - ../alembic/versions:/app/alembic/versions
       - ../logs:/app/logs
     ports:
-      - "8080:8080"
+      - "8081:8081"
     depends_on:
       postgres:
         condition: service_healthy
@@ -34,7 +34,7 @@ services:
     env_file:
       - ../.env/.database.dev.env
     volumes:
-      - /var/lib/trading_analyze_db2:/var/lib/postgresql/data
+      - ../postgres/data:/var/lib/postgresql/data
       - ../postgres/postgresql.conf:/etc/postgresql/postgresql.conf
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
@@ -42,10 +42,4 @@ services:
       timeout: 5s
       retries: 5
     ports:
-      - "5432:5432"
-
-  redis:
-    image: redis:7.2.3
-    restart: on-failure
-    ports:
-      - "6379:6379"
+      - "5431:5431"

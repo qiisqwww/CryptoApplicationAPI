@@ -2,8 +2,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql import select, insert
 from fastapi import Depends
 
-from src.auth.models import User
-from src.auth.schemas import UserInputData, UserCreateData, UserData
+from src.models import User
+from src.schemas import UserInputData, UserCreateData, UserData
 from src.database import get_async_session
 
 __all__ = [

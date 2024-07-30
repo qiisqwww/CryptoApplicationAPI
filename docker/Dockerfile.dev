@@ -1,4 +1,3 @@
-# Choose image for project. It will be downloaded from https://hub.docker.com/
 FROM python:3.12-alpine
 
 
@@ -10,22 +9,17 @@ ENV PYTHONFAULTHANDLER=1 \
     PIP_DEFAULT_TIMEOUT=100 \
     POETRY_VERSION=1.5.1
 
-# Install poetry.
 RUN pip install "poetry==$POETRY_VERSION"
 
-# Copy only requirements to cache them in docker layer
 WORKDIR /app
 
-COPY nginx/trading_analyze_api.crt /app/
+COPY nginx/metro_alarm_server_auth.crt /app/
 COPY poetry.lock pyproject.toml /app/
 
-# Configurate poetry and install requirement dependencies.
 RUN poetry config virtualenvs.create false && poetry install --no-dev --no-interaction --no-ansi
 
-# Copy project into container.
 COPY src /app/src
 
-# Copy alembic data into container.
 COPY alembic /app/alembic
 COPY alembic.ini /app/alembic.ini
 COPY scripts/app.sh /app/scripts/app.sh

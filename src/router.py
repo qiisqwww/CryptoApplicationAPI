@@ -2,7 +2,7 @@ from fastapi import APIRouter
 
 #  src.auth.auth import auth_backend, fastapi_users
 # from src.auth.schemas import UserRead, UserCreate
-from src.auth.routers import login_router, register_router
+from src.routers import login_router, register_router
 
 __all__ = [
     "auth_router"
