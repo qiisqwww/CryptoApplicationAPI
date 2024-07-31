@@ -1,15 +1,6 @@
 version: '3.9'
 
 services:
-#  proxy:
-#    build:
-#      dockerfile: Dockerfile
-#      context: ../nginx
-#    ports:
-#      - "443:443"
-#    depends_on:
-#      - metro_alarm_server_auth
-
   metro_alarm_server_auth:
     build:
       dockerfile: ./docker/Dockerfile.dev
@@ -20,11 +11,11 @@ services:
     volumes:
       - ../alembic/versions:/app/alembic/versions
       - ../logs:/app/logs
-    ports:
-      - "8081:8081"
     depends_on:
       postgres_auth:
         condition: service_healthy
+    networks:
+      - msa
 
   postgres_auth:
     image: postgres:16.1-alpine3.19
@@ -39,5 +30,10 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    ports:
-      - "5431:5432"
+    networks:
+      - msa
+
+networks:
+  msa:
+    driver: bridge
+    external: true
