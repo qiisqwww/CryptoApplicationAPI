@@ -13,7 +13,6 @@ RUN pip install "poetry==$POETRY_VERSION"
 
 WORKDIR /app
 
-COPY nginx/metro_alarm_server_auth.crt /app/
 COPY poetry.lock pyproject.toml /app/
 
 RUN poetry config virtualenvs.create false && poetry install --no-dev --no-interaction --no-ansi
