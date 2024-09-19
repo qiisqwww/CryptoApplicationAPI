@@ -2,7 +2,7 @@ from typing import Optional, Self
 
 from pydantic import BaseModel, EmailStr, Field
 
-from src.models import User
+from src.entities.models import User
 
 __all__ = [
     "UserReturnData"

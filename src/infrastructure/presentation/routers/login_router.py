@@ -5,9 +5,10 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 from src.config import TOKEN_LIFETIME
-from src.services import UserService, get_user_service
-from src.schemas import Token
-from src.utils import create_access_token
+from src.infrastructure.get_service import get_user_service
+from src.application.services import UserService
+from src.application.schemas import Token
+from src.application.utils import create_access_token
 
 __all__ = [
     "login_router",

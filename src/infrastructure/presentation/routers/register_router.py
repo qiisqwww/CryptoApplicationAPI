@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from src.schemas import UserInputData, UserReturnData
-from src.services import UserService, get_user_service
-from src.utils import get_hashed_password
+from src.infrastructure.get_service import get_user_service
+from src.application.services import UserService
+from src.application.schemas import UserInputData, UserReturnData
+from src.application.utils import get_hashed_password
 
 __all__ = [
     "register_router",
