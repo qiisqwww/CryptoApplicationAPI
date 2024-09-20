@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 from src.config import DEBUG, PROJECT_NAME, DOCS_URL, OPENAPI_URL
-from src.infrastructure.presentation import exceptions_middleware
+from src.infrastructure.presentation.catch_exception_middleware import catch_exception_middleware
 from src.infrastructure.presentation.routers import auth_router
 
 __all__ = [
@@ -18,5 +18,5 @@ app_object = FastAPI(
     openapi_url=openapi_url
 )
 
-app_object.middleware("http")(exceptions_middleware)
+app_object.middleware("http")(catch_exception_middleware)
 app_object.include_router(auth_router)

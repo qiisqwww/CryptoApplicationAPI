@@ -16,6 +16,8 @@ services:
         condition: service_healthy
     networks:
       - msa
+    ports:
+      - "81:8081"
 
   postgres_auth:
     image: postgres:16.1-alpine3.19

@@ -29,5 +29,5 @@ class UserService:
         return UserData.from_orm(user) if user else None
 
     async def get_user_by_email(self, email: str) -> UserData | None:
-        user = await self.get_user_by_email(email)
+        user = await self._user_repository.get_user_by_email(email)
         return UserData.from_orm(user) if user else None
