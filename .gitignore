@@ -5,3 +5,4 @@ postgres/data
 *.key
 *.crt
 *.log
+src/__pycache__
