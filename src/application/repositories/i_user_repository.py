@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+from src.application.schemas import UserCreateData
 from src.entities.models import User
 
 __all__ = [
@@ -9,7 +10,7 @@ __all__ = [
 
 class IUserRepository(ABC):
     @abstractmethod
-    async def insert_user(self) -> None:
+    async def register_user(self, user_create_data: UserCreateData) -> User:
         ...
 
     @abstractmethod
@@ -17,5 +18,13 @@ class IUserRepository(ABC):
         ...
 
     @abstractmethod
-    async def get_user_data(self, user_id: int) -> User:
+    async def get_user_by_id(self, user_id: int) -> User | None:
+        ...
+
+    @abstractmethod
+    async def get_user_by_username(self, username: str) -> User | None:
+        ...
+
+    @abstractmethod
+    async def get_user_by_email(self, email: str) -> User | None:
         ...
