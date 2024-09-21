@@ -13,7 +13,8 @@ from .config import (
     DB_NAME,
     DB_HOST,
     DB_USER,
-    TOKEN_LIFETIME,
+    ACCESS_TOKEN_EXPIRE_MINUTES,
+    REFRESH_TOKEN_EXPIRE_DAYS,
     ALGORITHM
 )
 from .logger_config import configurate_logger
@@ -33,7 +34,8 @@ __all__ = [
     "DB_PASS",
     "DB_NAME",
     "DB_PORT",
-    "TOKEN_LIFETIME",
+    "ACCESS_TOKEN_EXPIRE_MINUTES",
+    "REFRESH_TOKEN_EXPIRE_DAYS",
     "ALGORITHM",
     "configurate_logger"
 ]

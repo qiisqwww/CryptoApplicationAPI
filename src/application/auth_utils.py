@@ -3,11 +3,14 @@ from datetime import timedelta, datetime, timezone
 from jwt import encode, decode
 from bcrypt import hashpw, checkpw, gensalt
 
+from src.application.schemas import UserData
+from src.application.token_type import TokenType
 from src.config import (
     ALGORITHM,
     PRIVATE_KEY_PATH,
     PUBLIC_KEY_PATH,
-    TOKEN_LIFETIME
+    ACCESS_TOKEN_EXPIRE_MINUTES,
+    REFRESH_TOKEN_EXPIRE_DAYS
 )
 
 
@@ -18,16 +21,31 @@ _all__ = [
 
 class AuthUtils:
     @staticmethod
-    def encoded_jwt(data: dict, private_key: str = PRIVATE_KEY_PATH.read_text()) -> str:
-        to_encode = data.copy()
-        expire = datetime.now(timezone.utc) + timedelta(seconds=TOKEN_LIFETIME)
-        to_encode.update({"exp": expire})
+    def create_token(user: UserData, token_type: TokenType, private_key: str = PRIVATE_KEY_PATH.read_text()) -> str:
+        expire = datetime.now(timezone.utc) + AuthUtils._get_timedelta_for_token(token_type)
 
-        encoded_jwt = encode(to_encode, private_key, algorithm=ALGORITHM)
-        return encoded_jwt
+        user_payload = {
+            TokenType.FIELD: token_type,
+            "sub": user.username,
+            "email": user.email,
+            "exp": expire
+        }
+
+        access_token = encode(user_payload, private_key, algorithm=ALGORITHM)
+        return access_token
 
     @staticmethod
-    def decoded_jwt(token: str | bytes, public_key: str = PUBLIC_KEY_PATH.read_text()) -> dict:
+    def _get_timedelta_for_token(token_type: TokenType) -> timedelta:
+        match token_type:
+            case TokenType.ACCESS:
+                return timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+            case TokenType.REFRESH:
+                return timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+            case _:
+                return timedelta(0)
+
+    @staticmethod
+    def decode_token(token: str | bytes, public_key: str = PUBLIC_KEY_PATH.read_text()) -> dict:
         decoded_jwt = decode(token, public_key, algorithms=[ALGORITHM])
         return decoded_jwt
 

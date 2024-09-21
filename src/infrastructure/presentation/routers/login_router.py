@@ -6,7 +6,8 @@ from fastapi.security import OAuth2PasswordBearer
 
 from src.infrastructure.get_service import get_user_service
 from src.application.services import UserService
-from src.application.schemas import Token, UserReturnData, TokenData
+from src.application.schemas import Token, UserReturnData
+from src.application.token_type import TokenType
 from src.application.auth_utils import AuthUtils
 
 __all__ = [
@@ -38,8 +39,10 @@ async def login(
             detail="User is not active"
         )
 
-    access_token = AuthUtils.encoded_jwt({"sub": user.username})
-    return Token(access_token=access_token, token_type="bearer")
+    return Token(
+        access_token=AuthUtils.create_token(user, TokenType.ACCESS),
+        refresh_token=AuthUtils.create_token(user, TokenType.REFRESH)
+    )
 
 
 @login_router.get("/me", response_model=UserReturnData)
@@ -54,15 +57,14 @@ async def get_user(
     )
 
     try:
-        payload = AuthUtils.decoded_jwt(token)
+        payload = AuthUtils.decode_token(token)
         username: str | None = payload.get("sub")
         if username is None:
             raise credentials_exception
-        token_data = TokenData(username=username)
     except InvalidTokenError:
         raise credentials_exception
 
-    user = await user_service.get_user_by_username(token_data.username)
+    user = await user_service.get_user_by_username(username)
     if user is None:
         raise credentials_exception
 
