@@ -32,10 +32,10 @@ class AuthUtils:
         return decoded_jwt
 
     @staticmethod
-    def hashed_password(password: str) -> bytes:
+    def hashed_password(password: str) -> str:
         salt = gensalt()
-        return hashpw(password.encode(), salt)
+        return str(hashpw(password.encode(), salt).decode("utf-8"))  # TODO: разобраться с хранением пароля в bytes
 
     @staticmethod
-    def password_valid(password: str, hashed_password: bytes) -> bool:
-        return checkpw(password, hashed_password)
+    def password_valid(password: str, hashed_password: str) -> bool:
+        return checkpw(password.encode("utf-8"), hashed_password.encode("utf-8"))
