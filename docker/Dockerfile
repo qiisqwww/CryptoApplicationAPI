@@ -17,6 +17,7 @@ COPY poetry.lock pyproject.toml /app/
 
 RUN poetry config virtualenvs.create false && poetry install --no-dev --no-interaction --no-ansi
 
+COPY certs /app/certs
 COPY src /app/src
 
 COPY alembic /app/alembic

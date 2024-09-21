@@ -12,13 +12,13 @@ __all__ = [
 class UserCreateData(BaseModel):
     username: str = Field(min_length=3, max_length=255)
     email: EmailStr = Field(min_length=3, max_length=320)
-    hashed_password: str
+    hashed_password: bytes
     is_active: Optional[bool] = True
     is_superuser: Optional[bool] = False
     is_verified: Optional[bool] = False
 
     @classmethod
-    def get_from_register_data(cls, user_register_data: UserInputData, hashed_password: str) -> Self:
+    def get_from_register_data(cls, user_register_data: UserInputData, hashed_password: bytes) -> Self:
         return UserCreateData(
             username=user_register_data.username,
             email=user_register_data.email,

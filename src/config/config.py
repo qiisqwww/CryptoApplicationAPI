@@ -6,6 +6,8 @@ __all__ = [
     "DEBUG",
     "PROJECT_NAME",
     "LOGGING_PATH",
+    "PRIVATE_KEY_PATH",
+    "PUBLIC_KEY_PATH",
     "DOCS_URL",
     "OPENAPI_URL",
     "HTTP_HOST",
@@ -15,7 +17,6 @@ __all__ = [
     "DB_PORT",
     "DB_PASS",
     "DB_USER",
-    "SECRET",
     "TOKEN_LIFETIME",
     "ALGORITHM"
 ]
@@ -26,6 +27,9 @@ DEBUG: bool = BoolEnv("DEBUG")
 PROJECT_NAME: str = StrEnv("PROJECT_NAME")
 
 LOGGING_PATH: Path = Path(StrEnv("LOGGING_PATH"))
+PRIVATE_KEY_PATH: Path = Path(StrEnv("PRIVATE_KEY_PATH"))
+PUBLIC_KEY_PATH: Path = Path(StrEnv("PUBLIC_KEY_PATH"))
+
 DOCS_URL: str = StrEnv("DOCS_URL")
 OPENAPI_URL: str = StrEnv("OPENAPI_URL")
 
@@ -39,5 +43,4 @@ DB_PORT: int = IntEnv("DB_PORT")
 DB_HOST: str = StrEnv("DB_HOST")
 
 TOKEN_LIFETIME: int = IntEnv("TOKEN_LIFETIME")
-SECRET: str = StrEnv("SECRET")
 ALGORITHM: str = StrEnv("ALGORITHM")

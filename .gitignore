@@ -5,4 +5,6 @@ postgres/data
 *.key
 *.crt
 *.log
+*.pem
 src/__pycache__
+/certs

@@ -2,6 +2,8 @@ from .config import (
     DEBUG,
     PROJECT_NAME,
     LOGGING_PATH,
+    PRIVATE_KEY_PATH,
+    PUBLIC_KEY_PATH,
     DOCS_URL,
     OPENAPI_URL,
     HTTP_HOST,
@@ -11,7 +13,6 @@ from .config import (
     DB_NAME,
     DB_HOST,
     DB_USER,
-    SECRET,
     TOKEN_LIFETIME,
     ALGORITHM
 )
@@ -21,6 +22,8 @@ __all__ = [
     "DEBUG",
     "PROJECT_NAME",
     "LOGGING_PATH",
+    "PRIVATE_KEY_PATH",
+    "PUBLIC_KEY_PATH",
     "DOCS_URL",
     "OPENAPI_URL",
     "HTTP_HOST",
@@ -30,7 +33,6 @@ __all__ = [
     "DB_PASS",
     "DB_NAME",
     "DB_PORT",
-    "SECRET",
     "TOKEN_LIFETIME",
     "ALGORITHM",
     "configurate_logger"
