@@ -2,7 +2,7 @@ from typing import Annotated
 
 from jwt import InvalidTokenError
 from fastapi import APIRouter, Depends, HTTPException, status, Form
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 from src.infrastructure.get_service import get_user_service
 from src.application.services import UserService
@@ -16,7 +16,7 @@ __all__ = [
 
 
 login_router = APIRouter()
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/login")
+http_bearer = HTTPBearer()
 
 
 @login_router.post("/login")
@@ -47,25 +47,40 @@ async def login(
 
 @login_router.get("/me", response_model=UserReturnData)
 async def get_user(
-        token: Annotated[str, Depends(oauth2_scheme)],
+        token: Annotated[HTTPAuthorizationCredentials, Depends(http_bearer)],
         user_service: UserService = Depends(get_user_service),
 ):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-
     try:
-        payload = AuthUtils.decode_token(token)
-        username: str | None = payload.get("sub")
-        if username is None:
-            raise credentials_exception
+        payload = AuthUtils.decode_token(token.credentials)
     except InvalidTokenError:
-        raise credentials_exception
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    token_type = payload.get(TokenType.FIELD)
+    if token_type != TokenType.ACCESS:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=f"expected '{TokenType.ACCESS}', found {token_type!r} token type",
+            headers={"WWW-Authenticate": "Bearer    "},
+        )
+
+    username: str | None = payload.get("sub")
+    if username is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
     user = await user_service.get_user_by_username(username)
     if user is None:
-        raise credentials_exception
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
     return user
