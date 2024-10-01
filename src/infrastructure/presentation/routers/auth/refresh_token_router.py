@@ -1,8 +1,7 @@
 from typing import Annotated
 
 from jwt import InvalidTokenError
-from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi import APIRouter, Depends, HTTPException, status, Query
 
 from src.infrastructure.get_service import get_auth_service
 from src.application.services import (
@@ -19,7 +18,6 @@ __all__ = [
 
 
 refresh_token_router = APIRouter()
-http_bearer = HTTPBearer()
 
 
 @refresh_token_router.post(
@@ -28,11 +26,11 @@ http_bearer = HTTPBearer()
     response_model_exclude_none=True
 )
 async def refresh_access_token(
-        token: Annotated[HTTPAuthorizationCredentials, Depends(http_bearer)],  # TODO: возможно стоит ждать str
+        token: Annotated[str, Query()],
         auth_service: AuthService = Depends(get_auth_service),
 ) -> Token:
     try:
-        token = await auth_service.refresh_access_token(token.credentials)
+        token = await auth_service.refresh_access_token(token)
     except InvalidTokenError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

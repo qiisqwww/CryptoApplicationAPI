@@ -48,16 +48,16 @@ class AuthService:
             refresh_token=TokenUtils.create_token(user, TokenType.REFRESH)
         )
 
-    async def authorize(self, token_credentials: dict) -> UserData:
-        user = await self._decode_token_by_type(token_credentials, TokenType.ACCESS)
+    async def authorize(self, access_token: str) -> UserData:
+        user = await self._decode_token_by_type(access_token, TokenType.ACCESS)
         return user
 
-    async def refresh_access_token(self, token_credentials: dict) -> Token:
-        user = await self._decode_token_by_type(token_credentials, TokenType.REFRESH)
+    async def refresh_access_token(self, refresh_token: str) -> Token:
+        user = await self._decode_token_by_type(refresh_token, TokenType.REFRESH)
         return Token(access_token=TokenUtils.create_token(user, TokenType.ACCESS))
 
-    async def _decode_token_by_type(self, token_credentials: dict, expected_token_type: TokenType) -> UserData:
-        payload = TokenUtils.decode_token(token_credentials)
+    async def _decode_token_by_type(self, token: str, expected_token_type: TokenType) -> UserData:
+        payload = TokenUtils.decode_token(token)
 
         token_type = payload.get(TokenType.FIELD)
         if token_type != expected_token_type:
