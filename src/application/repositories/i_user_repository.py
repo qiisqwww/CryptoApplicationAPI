@@ -10,7 +10,7 @@ __all__ = [
 
 class IUserRepository(ABC):
     @abstractmethod
-    async def register_user(self, user_create_data: UserCreateData) -> User:
+    async def insert_user(self, user_create_data: UserCreateData) -> User:
         ...
 
     @abstractmethod
@@ -18,13 +18,13 @@ class IUserRepository(ABC):
         ...
 
     @abstractmethod
-    async def get_user_by_id(self, user_id: int) -> User | None:
+    async def find_user_by_id(self, user_id: int) -> User | None:
         ...
 
     @abstractmethod
-    async def get_user_by_username(self, username: str) -> User | None:
+    async def find_user_by_username(self, username: str) -> User | None:
         ...
 
     @abstractmethod
-    async def get_user_by_email(self, email: str) -> User | None:
+    async def find_user_by_email(self, email: str) -> User | None:
         ...

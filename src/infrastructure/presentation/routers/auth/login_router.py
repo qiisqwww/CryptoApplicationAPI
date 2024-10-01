@@ -2,8 +2,12 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status, Form
 
-from src.infrastructure.get_service import get_user_service
-from src.application.services import UserService
+from src.infrastructure.get_service import get_auth_service
+from src.application.services import (
+    AuthService,
+    UserWasNotFoundException,
+    UserIsNotActiveException
+)
 from src.application.schemas import Token
 from src.application.token_type import TokenType
 from src.application.auth_utils import AuthUtils
@@ -20,23 +24,20 @@ login_router = APIRouter()
 async def login(
         username: Annotated[str, Form()],
         password: Annotated[str, Form()],
-        user_service: UserService = Depends(get_user_service)
+        auth_service: AuthService = Depends(get_auth_service)
 ) -> Token:
-    user = await user_service.get_user_by_username(username)
-    if user is None or not AuthUtils.password_valid(password, user.hashed_password):
+    try:
+        token = await auth_service.authenticate(username, password)
+    except UserWasNotFoundException as e:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
-        )
-
-    if not user.is_active:
+        ) from e
+    except UserIsNotActiveException as e:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="User is not active"
-        )
+        ) from e
 
-    return Token(
-        access_token=AuthUtils.create_token(user, TokenType.ACCESS),
-        refresh_token=AuthUtils.create_token(user, TokenType.REFRESH)
-    )
+    return token

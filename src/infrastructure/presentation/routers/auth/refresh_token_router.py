@@ -4,8 +4,12 @@ from jwt import InvalidTokenError
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
-from src.infrastructure.get_service import get_user_service
-from src.application.services import UserService
+from src.infrastructure.get_service import get_auth_service
+from src.application.services import (
+    AuthService,
+    UserWasNotFoundException,
+    UnexpectedTokenTypeException
+)
 from src.application.schemas import Token
 from src.application.token_type import TokenType
 from src.application.auth_utils import AuthUtils
@@ -26,39 +30,27 @@ http_bearer = HTTPBearer()
 )
 async def refresh_access_token(
         token: Annotated[HTTPAuthorizationCredentials, Depends(http_bearer)],  # TODO: возможно стоит ждать str
-        user_service: UserService = Depends(get_user_service),
+        auth_service: AuthService = Depends(get_auth_service),
 ) -> Token:
     try:
-        payload = AuthUtils.decode_token(token.credentials)
+        token = await auth_service.refresh_access_token(token.credentials)
     except InvalidTokenError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate token",
             headers={"WWW-Authenticate": "Bearer"},
         )
-
-    token_type = payload.get(TokenType.FIELD)
-    if token_type != TokenType.REFRESH:
+    except UnexpectedTokenTypeException:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=f"expected '{TokenType.REFRESH}', found {token_type!r} token type",
-            headers={"WWW-Authenticate": "Bearer    "},
+            detail=f"expected only '{TokenType.REFRESH}' token type",
+            headers={"WWW-Authenticate": "Bearer"},
         )
-
-    username: str | None = payload.get("sub")
-    if username is None:
+    except UserWasNotFoundException:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials",
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    user = await user_service.get_user_by_username(username)
-    if user is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Could not validate credentials",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-
-    return Token(access_token=AuthUtils.create_token(user, TokenType.ACCESS))
+    return token
