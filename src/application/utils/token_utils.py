@@ -1,7 +1,6 @@
 from datetime import timedelta, datetime, timezone
 
 from jwt import encode, decode
-from bcrypt import hashpw, checkpw, gensalt
 
 from src.application.schemas import UserData
 from src.application.token_type import TokenType
@@ -13,16 +12,15 @@ from src.config import (
     REFRESH_TOKEN_EXPIRE_DAYS
 )
 
-
 _all__ = [
-    "AuthUtils"
+    "TokenUtils"
 ]
 
 
-class AuthUtils:
+class TokenUtils:
     @staticmethod
     def create_token(user: UserData, token_type: TokenType, private_key: str = PRIVATE_KEY_PATH.read_text()) -> str:
-        expire = datetime.now(timezone.utc) + AuthUtils._get_timedelta_for_token(token_type)
+        expire = datetime.now(timezone.utc) + TokenUtils._get_timedelta_for_token(token_type)
 
         user_payload = {
             TokenType.FIELD: token_type,
@@ -48,12 +46,3 @@ class AuthUtils:
     def decode_token(token: str | bytes, public_key: str = PUBLIC_KEY_PATH.read_text()) -> dict:
         decoded_jwt = decode(token, public_key, algorithms=[ALGORITHM])
         return decoded_jwt
-
-    @staticmethod
-    def hashed_password(password: str) -> str:
-        salt = gensalt()
-        return str(hashpw(password.encode(), salt).decode("utf-8"))  # TODO: разобраться с хранением пароля в bytes
-
-    @staticmethod
-    def password_valid(password: str, hashed_password: str) -> bool:
-        return checkpw(password.encode("utf-8"), hashed_password.encode("utf-8"))

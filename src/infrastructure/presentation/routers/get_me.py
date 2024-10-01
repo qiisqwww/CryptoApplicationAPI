@@ -6,7 +6,6 @@ from jwt import InvalidTokenError
 
 from src.infrastructure.get_service import get_auth_service
 from src.application.schemas import UserReturnData
-from src.application.auth_utils import AuthUtils
 from src.application.token_type import TokenType
 from src.application.services import (
     AuthService,

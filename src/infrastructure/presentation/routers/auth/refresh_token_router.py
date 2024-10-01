@@ -12,7 +12,6 @@ from src.application.services import (
 )
 from src.application.schemas import Token
 from src.application.token_type import TokenType
-from src.application.auth_utils import AuthUtils
 
 __all__ = [
     "refresh_token_router"

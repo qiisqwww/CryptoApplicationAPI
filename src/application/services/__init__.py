@@ -1,4 +1,8 @@
-from .user_service import UserService
+from .user_service import (
+    UserService,
+    UsernameAlreadyUsedException,
+    EmailAlreadyUsedException
+)
 from .auth_service import (
     AuthService,
     UserWasNotFoundException,
@@ -8,6 +12,8 @@ from .auth_service import (
 
 __all__ = [
     "UserService",
+    "UsernameAlreadyUsedException",
+    "EmailAlreadyUsedException",
     "AuthService",
     "UserWasNotFoundException",
     "UserIsNotActiveException",

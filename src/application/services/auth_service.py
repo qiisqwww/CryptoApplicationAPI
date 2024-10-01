@@ -1,8 +1,7 @@
 from src.application.repositories import IUserRepository
 from src.application.schemas import Token, UserData
 from src.application.token_type import TokenType
-from src.application.auth_utils import AuthUtils
-
+from src.application.utils import TokenUtils, PasswdUtils
 
 __all__ = [
     "UserWasNotFoundException",
@@ -38,15 +37,15 @@ class AuthService:
 
     async def authenticate(self, username: str, password: str) -> Token:
         user = await self._user_repository.find_user_by_username(username)
-        if not user or AuthUtils.password_valid(password, user.hashed_password):
+        if not user or PasswdUtils.password_valid(password, user.hashed_password):
             raise UserWasNotFoundException
 
         if not user.is_active:
             raise UserIsNotActiveException
 
         return Token(
-            access_token=AuthUtils.create_token(user, TokenType.ACCESS),
-            refresh_token=AuthUtils.create_token(user, TokenType.REFRESH)
+            access_token=TokenUtils.create_token(user, TokenType.ACCESS),
+            refresh_token=TokenUtils.create_token(user, TokenType.REFRESH)
         )
 
     async def authorize(self, token_credentials: dict) -> UserData:
@@ -55,10 +54,10 @@ class AuthService:
 
     async def refresh_access_token(self, token_credentials: dict) -> Token:
         user = self._decode_token_by_type(token_credentials, TokenType.REFRESH)
-        return Token(refresh_token=AuthUtils.create_token(user, TokenType.REFRESH))
+        return Token(refresh_token=TokenUtils.create_token(user, TokenType.REFRESH))
 
     async def _decode_token_by_type(self, token_credentials: dict, expected_token_type: TokenType) -> UserData:
-        payload = AuthUtils.decode_token(token_credentials)
+        payload = TokenUtils.decode_token(token_credentials)
 
         token_type = payload.get(TokenType.FIELD)
         if token_type != expected_token_type:
