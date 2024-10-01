@@ -25,7 +25,7 @@ http_bearer = HTTPBearer()
 @get_me_router.get("/me", response_model=UserReturnData)
 async def get_user(
         token: Annotated[HTTPAuthorizationCredentials, Depends(http_bearer)],
-        auth_service: AuthService = Depends(get_auth_service()),
+        auth_service: AuthService = Depends(get_auth_service),
 ):
     try:
         user = await auth_service.authorize(token.credentials)
