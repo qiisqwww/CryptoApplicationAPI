@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, ConfigDict
 
 __all__ = [
     "UserData"
@@ -16,5 +16,4 @@ class UserData(BaseModel):
     is_superuser: Optional[bool] = False
     is_verified: Optional[bool] = False
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
