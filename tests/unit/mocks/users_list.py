@@ -29,6 +29,7 @@ users_list: list[User] = [
         id=4,
         username="user4",
         email="user4@gmail.com",
-        hashed_password=PasswdUtils.hashed_password("user4")
+        hashed_password=PasswdUtils.hashed_password("user4"),
+        is_active=False
     )
 ]
