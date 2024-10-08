@@ -5,10 +5,12 @@ from tests.unit.mocks.users_list import users_list
 from src.application.services import (
     AuthService,
     UserWasNotFoundException,
-    UserIsNotActiveException, UnexpectedTokenTypeException
+    UserIsNotActiveException,
+    UnexpectedTokenTypeException
 )
 from src.application.utils import TokenUtils
 from src.application.token_type import TokenType
+from src.entities import User
 
 
 @pytest.mark.asyncio()
@@ -55,5 +57,32 @@ async def test_decode_token_by_type_unexpected_token_type(
         expected_token_type: TokenType,
         auth_service: AuthService
 ) -> None:
+    with pytest.raises(UnexpectedTokenTypeException):
+        await auth_service._decode_token_by_type(token, expected_token_type)
+
+
+@pytest.mark.asyncio()
+@pytest.mark.parametrize(
+    "token, expected_token_type",
+    [
+        (TokenUtils.create_token(User(
+            id=5,
+            username="not found",
+            email="email",
+            hashed_password="some trash"
+        ), TokenType.ACCESS), TokenType.ACCESS),
+        (TokenUtils.create_token(User(
+            id=5,
+            username="also dont exist",
+            email="another@email",
+            hashed_password="any more trash"
+        ), TokenType.REFRESH), TokenType.REFRESH)
+    ]
+)
+async def test_decode_token_by_type_user_was_not_found(
+        token: str,
+        expected_token_type: TokenType,
+        auth_service: AuthService
+) -> None:
     with pytest.raises(UserWasNotFoundException):
-        await auth_service.authenticate(token, expected_token_type)
+        await auth_service._decode_token_by_type(token, expected_token_type)
