@@ -16,14 +16,18 @@ class MockUserRepository(IUserRepository):
         self.users = users_list.copy()
 
     async def insert_user(self, user_create_data: UserCreateData) -> User:
-        self.users.append(User(
+        created_user = User(
             id=self.users[-1].id + 1,
             username=user_create_data.username,
             email=user_create_data.email,
+            hashed_password=user_create_data.hashed_password,
             is_active=user_create_data.is_active,
             is_superuser=user_create_data.is_superuser,
             is_verified=user_create_data.is_verified
-        ))
+        )
+
+        self.users.append(created_user)
+        return created_user
 
     async def set_user_inactive(self, user_id: int) -> None:
         for user in self.users:

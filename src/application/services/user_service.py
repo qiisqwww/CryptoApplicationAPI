@@ -41,4 +41,4 @@ class UserService:
         user_create_data = UserCreateData.get_from_register_data(user_register_data, hashed_password)
 
         user = await self._user_repository.insert_user(user_create_data)
-        return UserData.from_orm(user)
+        return UserData.model_validate(user)
