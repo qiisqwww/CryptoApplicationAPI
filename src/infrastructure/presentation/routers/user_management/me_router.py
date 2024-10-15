@@ -14,15 +14,15 @@ from src.application.services import (
 )
 
 __all__ = [
-    "get_me_router"
+    "me_router"
 ]
 
 
-get_me_router = APIRouter()
+me_router = APIRouter()
 http_bearer = HTTPBearer()
 
 
-@get_me_router.get("/me", response_model=UserReturnData)
+@me_router.get("/me", response_model=UserReturnData)
 async def get_user(
         token: Annotated[HTTPAuthorizationCredentials, Depends(http_bearer)],
         auth_service: AuthService = Depends(get_auth_service),

@@ -42,3 +42,7 @@ class UserService:
 
         user = await self._user_repository.insert_user(user_create_data)
         return UserData.model_validate(user)
+
+    async def user_exists(self, user_id: int) -> bool:
+        user = await self._user_repository.find_user_by_id(user_id)
+        return user is not None

@@ -8,6 +8,6 @@ __all__ = [
 ]
 
 
-auth_router = APIRouter()
+auth_router = APIRouter(prefix="/auth")
 auth_router.include_router(login_router)
 auth_router.include_router(refresh_token_router)
