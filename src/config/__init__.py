@@ -15,7 +15,8 @@ from .config import (
     DB_USER,
     ACCESS_TOKEN_EXPIRE_MINUTES,
     REFRESH_TOKEN_EXPIRE_DAYS,
-    ALGORITHM
+    ALGORITHM,
+    SECRET_INSIDE_KEY
 )
 from .logger_config import configurate_logger
 
@@ -37,5 +38,6 @@ __all__ = [
     "ACCESS_TOKEN_EXPIRE_MINUTES",
     "REFRESH_TOKEN_EXPIRE_DAYS",
     "ALGORITHM",
+    "SECRET_INSIDE_KEY",
     "configurate_logger"
 ]
