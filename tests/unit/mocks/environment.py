@@ -23,3 +23,5 @@ os.environ["DB_HOST"] = "neverused"
 os.environ["ACCESS_TOKEN_EXPIRE_MINUTES"] = "5"
 os.environ["REFRESH_TOKEN_EXPIRE_DAYS"] = "1"
 os.environ["ALGORITHM"] = "RS256"
+
+os.environ["SECRET_INSIDE_KEY"] = "neverused"
